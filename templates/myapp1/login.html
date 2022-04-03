@@ -82,37 +82,28 @@
                         <div class="small-dialog-content">
 
                             <!-- Start of Login form -->
-                            <form  action="/log_in" method="post" >
-                                 {% csrf_token %}
-                                <p class="status"></p>
+                            <form  action="" method="post" novalidate>
+                                {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                        <p class="alert alert-danger my-3">{{ error }}</p>
+                                    {% endfor %}
+                                    
+                                {% endif %}
+                                {% for fm in form %}
+                                    {{ fm.label_tag }} {{ fm }} {{ fm.errors| striptags }}<br><br>
 
-                                <div class="form-group">
-                                    <label for="username">Username *</label>
-                                    <input type="text" class="form-control" name="userid" id="userid" placeholder="Your Username or Email *" />
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="password">Password *</label>
-                                    <input type="password" class="form-control" name="psw" id="psw" placeholder="Your Password *" />
-                                </div>
+                                {% endfor %}
+                            <input type="submit" value="Login">
 
-                                <div class="form-group">
-                                    <div class="checkbox pad-bottom-10">
-                                        <input id="check1" type="checkbox" name="remember" value="yes">
-                                        <label for="check1">Keep me signed in</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="submit" value="Sign in" class="btn btn-main btn-effect nomargin" />
-                                </div>
                             </form>
                             <!-- End of Login form -->
 
                             <div class="bottom-links">
                                 <span>
                                     Not a member?
-                                    <a  href="/signup">Sign up</a>
+                                    <a  href="{% url 'signup' %}">Sign up</a>
                                 </span>
 {#                                <a  class="forgetPasswordClick pull-right">Forgot Password</a>#}
                             </div>
@@ -136,7 +127,7 @@
                 </div>
                 <!-- =============== END OF LOGIN & REGISTER POPUP =============== -->
 
-                <a href="index.html" class="text-white">Back to Home</a>
+                <a href="{% url 'home' %}" class="text-white">Back to Home</a>
 
             </div>
         </main>

@@ -15,7 +15,7 @@
     <meta name="author" content="GnoDesign">
 
     <!-- ===== Website Title ===== -->
-    <title>Movify - Movies, Series & Cinema HTML Template</title>
+    <title>Movify {% block title %} Movies, Series & Cinema HTML Template{% endblock title %}</title>
 
     <!-- ===== Favicon & Different size apple touch icons ===== -->
     <link rel="shortcut icon" href={% static 'assets/images/favicon.png' %}"assets/images/favicon.png" type="image/x-icon">
@@ -115,16 +115,19 @@
                                     <ul class="dropdown-menu">
                                         <!-- Menu Item -->
                                         <li>
-                                            <!--<a class="dropdown-item" href="{% url 'bollywood' %}">Bollywood</a>-->
-                                             <a class="dropdown-item" href="#">Bollywood</a>
+
+                                             <a class="dropdown-item" href="{% url 'movie_list' %}">All Movie</a>
                                         </li>
 
                                         <!-- Divider -->
                                         <li class="divider" role="separator"></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'movie_filter' data='B' %}">Bollywood</a>
 
+                                        </li>
                                         <!-- Menu Item url ni name ni value nakhi chhe url hollywood ma -->
                                         <li>
-                                            <a class="dropdown-item" href="{% url 'hollywood' %}">Hollywood</a>
+                                            <a class="dropdown-item" href="{% url 'movie_filter' data='H' %}">Hollywood</a>
                                         </li>
 
                                         <!-- Menu Item -->
@@ -142,7 +145,9 @@
                                     <!-- Dropdown Menu -->
                                     <ul class="dropdown-menu">
                                         <!-- Menu Item -->
-
+  <li>
+                                            <a class="dropdown-item" href="{% url 'top' %}">Top Movies</a>
+                                        </li>
 
                                         <!-- Menu Item -->
                                         <li>
@@ -161,17 +166,16 @@
                                 </li>
 
                                 <!-- Menu Item -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="contact-us.html">Contact us</a>
-                                </li>
+
 
                             </ul>
                             <!-- ====== End of Main Menu ====== -->
 
 
                             <!-- ====== Start of Extra Nav ====== -->
-                            <ul class="navbar-nav extra-nav">
 
+                            <ul class="navbar-nav extra-nav">
+  {% if request.user.is_authenticated %}
                                 <!-- Menu Item -->
                                 <li class="nav-item">
                                     <a class="nav-link toggle-search" href="#">
@@ -180,14 +184,56 @@
                                 </li>
 
                                 <!-- Menu Item -->
+                                 <li class="nav-item dropdown" >
+                                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{request.user}}</a>
+
+                                    <!-- Dropdown Menu -->
+                                    <ul class="dropdown-menu">
+                                        <!-- Menu Item -->
+                                        <li>
+                                            <a class="dropdown-item" href={% url 'changepassword' %}>Change PAssword</a>
+                                        </li>
+
+                                        <!-- Menu Item -->
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'user_profile' %}">Profile</a>
+                                        </li>
+
+                                         <li>
+                                            <a class="dropdown-item" href="{% url 'orders' %}">Orders</a>
+                                        </li>
+
+                                        <!-- Menu Item -->
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'user_logout' %}">Logout</a>
+                                        </li>
+
+                                        <!-- Menu Item -->
 
 
+                                    </ul>
+                                </li>
+
+        <button type="submit" class="btn btn-main btn-effect" style="margin-right: 23px;">
+                                    <a href="{% url 'cart' %}" >
+                                        <i class="bp3-icon-shopping-cart"></i> Cart
+                                    </a>
+                              </button>
+
+ {% else %}
                                 <!-- Menu Item -->
-                              <button type="submit" class="btn btn-main btn-effect">
-                                    <a href="/login" >
+                              <button type="submit" class="btn btn-main btn-effect" style="margin-right: 23px;">
+                                    <a href="{% url 'log_in' %}" >
                                         <i class="icon-user"></i> login
                                     </a>
-                              </button>>
+                              </button>
+                                 <button type="submit" class="btn btn-main btn-effect">
+                                    <a href="{% url 'signup' %}" >
+                                        <i class="icon-user"></i> Register
+                                    </a>
+                              </button>
+  {% endif %}
+
                             </ul>
                             <!-- ====== End of Extra Nav ====== -->
 
@@ -320,71 +366,14 @@
 
 
 
-
-        <!-- =============== START OF LATEST MOVIES SECTION =============== -->
+    {% block banner_slider %} {% endblock banner_slider %}
     {% block page_nav %} {% endblock page_nav %}
         {% block latest_movie %} {% endblock latest_movie %}
-
-        <!-- =============== END OF LATEST MOVIES SECTION =============== -->
-
-
-
-
-        <!-- =============== START OF UPCOMING MOVIES SECTION =============== -->
     {% block story %} {% endblock story %}
     {% block new_movie %} {% endblock new_movie %}
-        <!-- =============== END OF UPCOMING MOVIES SECTION =============== -->
-
-
-
-
-        <!-- =============== START OF LATEST TV SHOW SECTION =============== -->
-
-        <!-- =============== END OF LATEST TV SHOW SECTION =============== -->
-
-
-
-
-        <!-- =============== START OF HOW IT WORKS SECTION =============== -->
-
-        <!-- =============== END OF HOW IT WORKS SECTION =============== -->
-
-
-
-
-        <!-- =============== END OF COUNTER SECTION =============== -->
     {% block counter %} {% endblock counter %}
-
-        <!-- =============== END OF COUNTER SECTION =============== -->
-
-
-
-
-        <!-- =============== END OF BECOME PREMIUM SECTION =============== -->
-
-
-        <!-- =============== END OF BECOME PREMIUM SECTION =============== -->
-
-
-
-
-        <!-- =============== END OF BLOG SECTION =============== -->
-
-        <!-- =============== END OF BLOG SECTION =============== -->
-
-
-
-
-
-        <!-- =============== END OF SUBSCRIBE SECTION =============== -->
     {% block subscription %} {% endblock subscription %}
 
-        <!-- =============== END OF SUBSCRIBE SECTION =============== -->
-
-
-
-
-        <!-- =============== START OF FOOTER =============== -->
         <footer class="footer1 bg-dark">
 
             <!-- ===== START OF FOOTER WIDGET AREA ===== -->

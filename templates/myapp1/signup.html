@@ -82,43 +82,28 @@
                         <div class="small-dialog-content">
 
                             <!-- Start of Login form -->
-                            <form id="cariera_login" action="/signup" method="post" >
-                                    {% csrf_token %}
-                                <p class="status"></p>
-
-                                <div class="form-group">
-                                    <label for="username">Email *</label>
-                                    <input type="text" class="form-control" name="email" id="email" placeholder="Your Username or Email *" />
+                            <form id="cariera_login" action="" method="post" novalidate >
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <p {% if  message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}  >
+                                        {{ message }}</p>
+                                {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                                {% for fm in form %}
+                                <div class="form-group mb-3">
+                                    {{ fm.label_tag }} {{ fm }} <small class="text-danger">{{ fm.errors| striptags }}</small>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="username">Name *</label>
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="Your name *" />
-                                </div>
-
-                                   <div class="form-group">
-                                    <label for="username">User Name *</label>
-                                    <input type="text" class="form-control" name="userid" id="userid" placeholder="Your Username or Email *" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="password">Password *</label>
-                                    <input type="password" class="form-control" name="psw" id="psw"  placeholder="Your Password *" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Re-enter Password *</label>
-                                    <input type="password" class="form-control" name="psw-repeat" id="psw-repeat" placeholder="reenter Your Password *" />
-                                </div>
-                                <div class="form-group">
-                                    <div class="checkbox pad-bottom-10">
-                                        <input id="check1" type="checkbox" name="remember" value="yes">
-                                        <label for="check1">Sign up</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="submit" value="Register" class="btn btn-main btn-effect nomargin" />
-                                </div>
+                                {% endfor %}
+                            <input type="submit" value="submit" class="btn btn-primary">
+                            <br>
+                            <div class="text-center text-primary"><small>Existing User?
+                            <a href="{% url 'log_in'%}" class="text-danger"> Login Now</a></small></div>
+                           {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                            <p class="alert alert-danger my-3">{{ error }}</p>
+                            {% endfor %}
+                            {% endif %}
                             </form>
                             <!-- End of Login form -->
 

@@ -1,3 +1,5 @@
+{% extends 'myapp1/base.html' %}
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -64,6 +66,7 @@
 </head>
 
 <body>
+  {% block latest_movie %}
 
 
     <!-- =============== START OF PRELOADER =============== -->
@@ -84,7 +87,7 @@
 
         <!-- =============== START OF HEADER NAVIGATION =============== -->
         <!-- Insert the class "sticky" in the header if you want a sticky header -->
-  {% include 'myapp1/header.html' %}
+
         <!-- =============== END OF HEADER NAVIGATION =============== -->
 
 
@@ -126,12 +129,9 @@
                         <div class="sort-by">
                             <div class="sort-by-select">
                                 <select class="chosen-select-no-single">
-                                    <option>Default Order</option>
-                                    <option>Featured</option>
-                                    <option>Top Viewed</option>
-                                    <option>Top Rated</option>
-                                    <option>Newest</option>
-                                    <option>Oldest</option>
+                                    <a href="{% url 'movie_list' %}"><option>All Movies</option></a>
+                                    <a href="{% url 'movie_list1' 'Bollywood'%}"><option>Bollywood</option></a>
+                                     <a href="{% url 'movie_list1' 'Hollywood'%}"><option>Hollywood</option></a>
                                 </select>
                             </div>
                         </div>
@@ -145,8 +145,9 @@
 
 
                 <!-- Start of Movie List -->
-                <div class="row">
 
+                <div class="row">
+  {% for ml in m_page %}
                     <!-- Movie List Item -->
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="movie-box-3 mb30">
@@ -155,7 +156,7 @@
                                 <!-- Movie List Image -->
                                 <div class="listing-image">
                                     <!-- Image -->
-                                    <img src={% static "assets/images/posters/poster-1.jpg" %} >
+                                    <img src="{{ ml.m_img.url }}" >
                                 </div>
 
                                 <!-- Movie List Content -->
@@ -164,25 +165,25 @@
 
                                         <!-- Play Button -->
                                         <div class="play-btn">
-                                            <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" class="play-video">
+                                            <a href="{{ ml.m_trailer }}" class="play-video">
                                                 <i class="fa fa-play"></i>
                                             </a>
                                         </div>
 
-                                        <h2 class="title">Star Wars</h2>
+                                        <h2 class="title">{{ ml.m_name }}</h2>
 
                                         <!-- Rating -->
                                         <div class="stars">
                                             <div class="rating">
                                                 <i class="fa fa-star"></i>
                                                 <span>7.5/10</span>
-                                                <span class="category">Action, Fantasy</span>
+                                                <span class="category">{{ ml.m_type }}</span>
                                             </div>
                                         </div>
 
                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam...</p>
 
-                                        <a href="movie-detail.html" class="btn btn-main btn-effect">details</a>
+                                        <a href="{% url 'movie_d' ml.id %}" class="btn btn-main btn-effect">details</a>
                                     </div>
                                 </div>
 
@@ -191,47 +192,7 @@
                     </div>
 
                     <!-- Movie List Item -->
-                    <d iv class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="movie-box-3 mb30">
-                            <div class="listing-container">
 
-                                <!-- Movie List Image -->
-                                <div class="listing-image">
-                                    <!-- Image -->
-                                    <img src={% static 'assets/images/posters/poster-2.jpg' %}>
-                                </div>
-
-                                <!-- Movie List Content -->
-                                <div class="listing-content">
-                                    <div class="inner">
-
-                                        <!-- Play Button -->
-                                        <div class="play-btn">
-                                            <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" class="play-video">
-                                                <i class="fa fa-play"></i>
-                                            </a>
-                                        </div>
-
-                                        <h2 class="title">The Brain</h2>
-
-                                        <!-- Rating -->
-                                        <div class="stars">
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <span>7.2/10</span>
-                                                <span class="category">Action, Comendy</span>
-                                            </div>
-                                        </div>
-
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam...</p>
-
-                                        <a href="movie-detail.html" class="btn btn-main btn-effect">details</a>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Movie List Item -->
 
@@ -241,9 +202,9 @@
                 <!-- End of Movie List -->
 
 
-
+{% endfor %}
                 <!-- Start of Pagination -->
-                <div class="row">
+               {% comment %} <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <nav class="pagination">
                             <ul>
@@ -254,7 +215,7 @@
                             </ul>
                         </nav>
                     </div>
-                </div>
+                </div>{% endcomment %}
                 <!-- End of Pagination -->
 
             </div>
@@ -264,7 +225,7 @@
 
 
         <!-- =============== START OF FOOTER =============== -->
-      {% include 'myapp1/footer.html' %}
+
         <!-- =============== END OF FOOTER =============== -->
 
     </div>
@@ -285,140 +246,7 @@
 
 
     <!-- =============== START OF LOGIN & REGISTER POPUP =============== -->
-    <div id="login-register-popup" class="small-dialog zoom-anim-dialog mfp-hide">
 
-        <!-- ===== Start of Signin wrapper ===== -->
-        <div class="signin-wrapper">
-            <div class="small-dialog-headline">
-                <h4 class="text-center">Sign in</h4>
-            </div>
-
-
-            <div class="small-dialog-content">
-
-                <!-- Start of Login form -->
-                <form id="cariera_login" method="post">
-                    <p class="status"></p>
-
-                    <div class="form-group">
-                        <label for="username">Username or Email *</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Your Username or Email *" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password *</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Your Password *" />
-                    </div>
-
-                    <div class="form-group">
-                        <div class="checkbox pad-bottom-10">
-                            <input id="check1" type="checkbox" name="remember" value="yes">
-                            <label for="check1">Keep me signed in</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" value="Sign in" class="btn btn-main btn-effect nomargin" />
-                    </div>
-                </form>
-                <!-- End of Login form -->
-
-                <div class="bottom-links">
-                    <span>
-                        Not a member?
-                        <a  class="signUpClick">Sign up</a>
-                    </span>
-                    <a  class="forgetPasswordClick pull-right">Forgot Password</a>
-                </div>
-            </div>
-
-        </div>
-        <!-- ===== End of Signin wrapper ===== -->
-
-
-
-        <!-- ===== Start of Signup wrapper ===== -->
-        <div class="signup-wrapper">
-            <div class="small-dialog-headline">
-                <h4 class="text-center">Sign Up</h4>
-            </div>
-
-            <div class="small-dialog-content">
-
-                <!-- Start of Registration form -->
-                <form id="cariera_registration" action="#" method="POST">
-                    <p class="status"></p>
-
-                    <div class="form-group">
-                        <label for="movify_user_login">Username</label>
-                        <input name="movify_user_login" id="movify_user_login" class="form-control" type="text"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="movify_user_email">Email</label>
-                        <input name="movify_user_email" id="movify_user_email" class="form-control" type="email"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input name="movify_user_pass" id="movify_password" class="form-control" type="password"/>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-main btn-effect nomargin" value="Register"/>
-                    </div>
-                </form>
-                <!-- End of Registration form -->
-
-                <div class="bottom-links">
-                    <span>
-                        Already have an account?
-                        <a class="signInClick">Sign in</a>
-                    </span>
-
-                    <a class="forgetPasswordClick pull-right">Forgot Password</a>
-                </div>
-
-            </div> <!-- .small-dialog-content -->
-
-        </div>
-        <!-- ===== End of Signup wrapper ===== -->
-
-
-
-        <!-- ===== Start of Forget Password wrapper ===== -->
-        <div class="forgetpassword-wrapper">
-            <div class="small-dialog-headline">
-                <h4 class="text-center">Forgotten Password</h4>
-            </div>
-
-            <div class="small-dialog-content">
-
-                <!-- Start of Forger Password form -->
-                <form id="forget_pass_form" action="#"  method="post">
-                    <p class="status"></p>
-
-                    <div class="form-group">
-                        <label for="password">Email Address *</label>
-                        <input type="email" name="user_login" class="form-control" id="email3" placeholder="Email Address *" />
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" name="submit" value="Get New Password" class="btn btn-main btn-effect nomargin" />
-                    </div>
-                </form>
-                <!-- End of Forger Password form -->
-
-                <div class="bottom-links">
-                    <a class="cancelClick">Cancel</a>
-                </div>
-
-            </div><!-- .small-dialog-content -->
-
-        </div>
-        <!-- ===== End of Forget Password wrapper ===== -->
-
-    </div>
     <!-- =============== END OF LOGIN & REGISTER POPUP =============== -->
 
 
@@ -428,6 +256,7 @@
         <a href="#"></a>
     </div>
     <!-- ===== End of Back to Top Button ===== -->
+  {% endblock latest_movie %}
 
 
 
